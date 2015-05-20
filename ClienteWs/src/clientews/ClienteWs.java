@@ -5,6 +5,8 @@
  */
 package clientews;
 
+import wssupercomputadora.InterruptedException_Exception;
+
 /**
  *
  * @author miguel
@@ -14,15 +16,30 @@ public class ClienteWs {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        int suma = suma(5,4);
-        System.out.println(suma);
+    public static void main(String[] args) throws InterruptedException, InterruptedException_Exception {
+        long tiempoProcesarComputo = System.currentTimeMillis();
+        procesarComputo(5,8);
+        tiempoProcesarComputo = System.currentTimeMillis() - tiempoProcesarComputo;
+        
+        long tiempoEsPrimo = System.currentTimeMillis();
+        esPrimo(5);
+        tiempoEsPrimo = System.currentTimeMillis() - tiempoEsPrimo;
+        
+        System.out.println("Tiempo total de procesar computo: "+tiempoProcesarComputo+" ms");
+        System.out.println("Tiempo total de es primo: "+tiempoEsPrimo+" ms");
+    }   
+
+    private static void procesarComputo(int p1, int p2) throws InterruptedException_Exception {
+        wssupercomputadora.WsSuperComputadora_Service service = new wssupercomputadora.WsSuperComputadora_Service();
+        wssupercomputadora.WsSuperComputadora port = service.getWsSuperComputadoraPort();
+        port.procesarComputo(p1, p2);
     }
 
-    private static int suma(int a, int b) {
-        wsSuperComputadora.WsSuperComputadora_Service service = new wsSuperComputadora.WsSuperComputadora_Service();
-        wsSuperComputadora.WsSuperComputadora port = service.getWsSuperComputadoraPort();
-        return port.suma(a, b);
+    private static boolean esPrimo(int numero) {
+        wssupercomputadora.WsSuperComputadora_Service service = new wssupercomputadora.WsSuperComputadora_Service();
+        wssupercomputadora.WsSuperComputadora port = service.getWsSuperComputadoraPort();
+        return port.esPrimo(numero);
     }
+
     
 }
